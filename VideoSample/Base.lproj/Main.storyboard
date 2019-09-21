@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
-    <device id="retina6_1" orientation="portrait">
+    <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -15,37 +15,48 @@
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="VideoSample" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JXx-F8-rNV">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NvI-U5-TgL" customClass="LineChartView" customModule="Charts">
+                                <rect key="frame" x="0.0" y="20" width="375" height="421"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="421" id="gw5-UC-tR5"/>
+                                </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="JXx-F8-rNV" secondAttribute="bottom" id="2lu-Ad-JQj"/>
+                            <constraint firstItem="NvI-U5-TgL" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="3sH-J8-sUg"/>
+                            <constraint firstItem="NvI-U5-TgL" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="LEw-Tr-Zrf"/>
                             <constraint firstItem="JXx-F8-rNV" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="SQe-P0-Iy6"/>
                             <constraint firstItem="JXx-F8-rNV" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Whc-6v-V90"/>
                             <constraint firstItem="JXx-F8-rNV" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="tIJ-re-4Qw"/>
+                            <constraint firstItem="NvI-U5-TgL" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="u00-22-Byl"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
                         <outlet property="camPreview" destination="JXx-F8-rNV" id="Nve-y5-R9N"/>
+                        <outlet property="lineCharView" destination="NvI-U5-TgL" id="iG1-Zs-Njk"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-901" y="-10"/>
+            <point key="canvasLocation" x="-901.44927536231887" y="-10.044642857142856"/>
         </scene>
         <!--Video Playback View Controller-->
         <scene sceneID="RHw-ap-0cc">
             <objects>
                 <viewController id="WgK-Oe-PAL" customClass="VideoPlaybackViewController" customModule="VideoSample" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="hqF-D4-o7W">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="yFS-lq-wPq"/>
@@ -54,6 +65,20 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3dn-Nq-PNs" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="128.98550724637681" y="-19.419642857142858"/>
+        </scene>
+        <!--Heart Rate View Controller-->
+        <scene sceneID="V3n-ZS-XFG">
+            <objects>
+                <viewController id="nNQ-Hx-X6g" customClass="HeartRateViewController" customModule="VideoSample" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="7gc-Wp-vmk">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="aDH-oy-rNx"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fxF-Uj-05o" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
         </scene>
     </scenes>
 </document>
