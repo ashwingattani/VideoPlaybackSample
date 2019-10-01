@@ -19,6 +19,9 @@ class ViewController: UIViewController, AVCaptureFileOutputRecordingDelegate {
     private var hueDataSet: NSMutableArray = []
     let framePerSeconds = 30
     
+    private var lastH: Float = 0
+    private var lastHighPassValue: Float = 0
+    
 //    private var redLineChartEntry = [ChartDataEntry]()
 //    private var blueLineChartEntry = [ChartDataEntry]()
 //    private var greenLineChartEntry = [ChartDataEntry]()
@@ -70,7 +73,7 @@ class ViewController: UIViewController, AVCaptureFileOutputRecordingDelegate {
     
     func setupSession() -> Bool {
         
-        captureSession.sessionPreset = AVCaptureSession.Preset.high
+        captureSession.sessionPreset = AVCaptureSession.Preset.low
         
         // Setup Camera
         let camera = AVCaptureDevice.default(for: AVMediaType.video)!
@@ -92,7 +95,9 @@ class ViewController: UIViewController, AVCaptureFileOutputRecordingDelegate {
             let frameRates: AVFrameRateRange = ranges[0]
             
             if (Int(frameRates.maxFrameRate) == framePerSeconds) {
-                if let validFormat = currentFormat, (CMVideoFormatDescriptionGetDimensions(format.formatDescription).width < CMVideoFormatDescriptionGetDimensions(validFormat.formatDescription).width && CMVideoFormatDescriptionGetDimensions(format.formatDescription).height < CMVideoFormatDescriptionGetDimensions(validFormat.formatDescription).height) {
+                if currentFormat == nil {
+                    currentFormat = format
+                } else if (CMVideoFormatDescriptionGetDimensions(format.formatDescription).width < CMVideoFormatDescriptionGetDimensions(currentFormat!.formatDescription).width && CMVideoFormatDescriptionGetDimensions(format.formatDescription).height < CMVideoFormatDescriptionGetDimensions(currentFormat!.formatDescription).height) {
                     currentFormat = format
                 }
             }
@@ -293,7 +298,7 @@ extension ViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
         
         if let cvImageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) {
             
-            CVPixelBufferLockBaseAddress(cvImageBuffer, CVPixelBufferLockFlags.init())
+            CVPixelBufferLockBaseAddress(cvImageBuffer, .readOnly)
             
             let width = CVPixelBufferGetWidth(cvImageBuffer)
             let height = CVPixelBufferGetHeight(cvImageBuffer)
@@ -321,17 +326,35 @@ extension ViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
             var alpha: CGFloat = 0
             color.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha)
             
-            self.hueDataSet.add(hue)
+//            let highPassValue: Float = Float(hue) - lastH;
+//            lastH = Float(hue);
+//            lastHighPassValue = highPassValue;
+//
+//            let lowPassValue: Float = (lastHighPassValue + highPassValue) / 2;
+//
+//            if self.hueDataSet.count > 500 && lowPassValue > 0 {
+//                let lastLowPassValue = self.hueDataSet[self.hueDataSet.count-1] as! Float
+//                if lastLowPassValue < 0 {
+//                    AudioServicesPlaySystemSound(SystemSoundID(1052))
+//                }
+//            }
+//
+//            self.hueDataSet.add(lowPassValue)
+//
+//            hueLineChartEntry.append(ChartDataEntry(x: iterationCount, y: Double(lowPassValue)))
+//            self.addNewEntryToGraph()
             
+            self.hueDataSet.add(hue)
+
             if (self.hueDataSet.count % framePerSeconds == 0) {
                 let displaySeconds = hueDataSet.count / framePerSeconds
                 let bandpassFilteredItems = self.butterworthBandpassFilter(inputData: self.hueDataSet)
                 let smoothedBandpassItems = self.medianSmoothing(inputData: bandpassFilteredItems)
                 let peakCount = self.peakCount(inputData: smoothedBandpassItems)
-                
+
                 let secondsPassed = smoothedBandpassItems.count / framePerSeconds
                 let percentage = secondsPassed / 60
-                
+
                 if percentage > 0 {
                     let heartRate = peakCount / percentage
                     print("heart rate: ", heartRate, "in seconds: ", displaySeconds)
@@ -342,7 +365,7 @@ extension ViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
 //            self.latestGreenValue = g/(255 * Float(width*height))
 //            self.latestBlueValue = b/(255 * Float(width*height))
             
-//            hueLineChartEntry.append(ChartDataEntry(x: iterationCount, y: Double(hue)))
+            
             
             
         }
